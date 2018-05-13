@@ -13,6 +13,7 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
 } from 'material-ui';
+import { client } from '../../client/BackendClient';
 
 import { PlanItem } from 'basic/PlanItem';
 import { HasId } from 'model/Entity';
@@ -77,6 +78,24 @@ export interface SpecItemProps extends React.DOMAttributes<HTMLDivElement> {
  * For use in lists, grids, etc.
  */
 export class SpecItem extends Component<SpecItemProps> {
+  /**
+   * When run is clicked we need to:
+   * 1. Query the swagger codegen web API to get a download link to our sdk.
+   * 2. Downlaod the sdk using the download link (one use).
+   * 3. Push the sdk to a remote repository.
+   *
+   * @param plan
+   */
+  private onRunClicked = async (plan: Plan) => {
+    // Generate sdk.
+    // console.log('onRunClicked() \nplan: ' + JSON.stringify(plan));
+    // Hard coded for the uber plan.
+    const response = await client.service('sdks').create({ planId: 4 });
+    // console.log('response\n' + JSON.stringify(response));
+    // Download sdk.
+    // Push sdk.
+  };
+
   private onChange = (event, expanded) =>
     this.props.onPanelChange(this.props.spec, expanded);
 
@@ -132,7 +151,7 @@ export class SpecItem extends Component<SpecItemProps> {
                 <List className={classes.bordered}>
                   {plans.map(plan => (
                     <ListItem key={plan.id}>
-                      <PlanItem plan={plan} />
+                      <PlanItem plan={plan} onRunClicked={this.onRunClicked} />
                     </ListItem>
                   ))}
                 </List>

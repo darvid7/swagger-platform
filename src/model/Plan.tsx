@@ -6,6 +6,7 @@ export interface Plan {
   options?: any;
   buildStatus: BuildStatus;
   specId: Id;
+  publishUrl: string;
 }
 
 export enum BuildStatus {

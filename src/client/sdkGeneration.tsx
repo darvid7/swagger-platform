@@ -15,7 +15,6 @@ export async function generateSdk(spec: Spec): Promise<any> {
 
   console.log('generateSdk');
   const body = { swaggerUrl: spec.path };
-  console.log(body);
   // TODO: Allow language selection, should be from Spec.
   const response = await fetch(SWAGGER_CODEGEN_ENDPOINT + 'python', {
     method: 'POST',
@@ -23,7 +22,9 @@ export async function generateSdk(spec: Spec): Promise<any> {
     headers: { 'Content-Type': 'application/json' },
   });
   const json = await response.json();
+  console.log('response as json: ' + JSON.stringify(json));
   if (json.type === 'error') {
+    console.log('body: ' + JSON.stringify(body));
     throw new Error(json.message);
   }
   return json;

@@ -46,19 +46,22 @@ export async function initDummyData(specs, plans): Promise<void> {
     title: 'Swagger API Example Uber',
     description: 'A test API for Uber',
     path:
-      'https://raw.githubusercontent.com/OAI/OpenAPI-Spec/master/examples/v2.0/yaml/uber.yaml',
+      'https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v2.0/yaml/uber.yaml',
   });
   await addToSpec(
     spec3,
     {
       target: 'python',
       version: 'alpha',
-      buildStatus: BuildStatus.SUCCESS,
+      buildStatus: BuildStatus.NOTRUN,
+      publishUrl: '',
     },
     {
       target: 'java',
       version: 'alpha',
-      buildStatus: BuildStatus.SUCCESS,
+      buildStatus: BuildStatus.NOTRUN,
+      publishUrl: '',
     },
   );
+  // https://github.com/telstra/MessagingAPI-v2/blob/master/docs/swagger/messaging-api-swagger.yaml
 }

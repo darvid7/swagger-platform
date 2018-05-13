@@ -25,6 +25,7 @@ const Styled: any = createStyled(theme => ({
 
 export interface PlanItemProps extends React.DOMAttributes<HTMLDivElement> {
   plan: Plan;
+  onRunClicked: (plan: Plan) => Promise<void>;
 }
 
 /**
@@ -32,7 +33,7 @@ export interface PlanItemProps extends React.DOMAttributes<HTMLDivElement> {
  * For use in lists, grids, etc.
  */
 
-export const PlanItem: SFC<PlanItemProps> = ({ plan }) => (
+export const PlanItem: SFC<PlanItemProps> = ({ plan, onRunClicked }) => (
   <Styled>
     {({ classes }) => (
       <div className={classes.planItemContainer}>
@@ -44,7 +45,10 @@ export const PlanItem: SFC<PlanItemProps> = ({ plan }) => (
           <BuildStatusChip buildStatus={plan.buildStatus} />
         </div>
         <div>
-          <Button disabled={plan.buildStatus === BuildStatus.RUNNING}>
+          <Button
+            disabled={plan.buildStatus === BuildStatus.RUNNING}
+            onClick={() => onRunClicked(plan)}
+          >
             {plan.buildStatus === BuildStatus.RUNNING ? 'Running...' : 'Run'}
           </Button>
         </div>

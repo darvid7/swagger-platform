@@ -101,7 +101,7 @@ async function run(port: number) {
   app.service('sdks').hooks({
     before: {
       async create(context) {
-        const plan = await specs.get(context.data.planId);
+        const plan = await plans.get(context.data.planId);
         const spec = await specs.get(plan.specId);
         const generationResponse = await generateSdk(spec);
         /*
@@ -110,6 +110,7 @@ async function run(port: number) {
         wherever the Swagger gen API stores it.
         */
         context.data.info = generationResponse;
+        // console.log('return from hook: ' + JSON.stringify(context));
         return context;
       },
     },
