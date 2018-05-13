@@ -75,12 +75,6 @@ export async function initDummyData(specs, plans): Promise<void> {
       version: 'alpha',
       buildStatus: BuildStatus.NOTRUN,
       publishUrl: '',
-    },
-    {
-      target: 'java',
-      version: 'alpha',
-      buildStatus: BuildStatus.NOTRUN,
-      publishUrl: '',
-    },
+    }
   );
 }

@@ -19,7 +19,7 @@ export async function generateSdk(spec: Spec): Promise<any> {
   const response = await fetch(SWAGGER_CODEGEN_ENDPOINT + 'python', {
     method: 'POST',
     body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' }
   });
   const json = await response.json();
   console.log('response as json: ' + JSON.stringify(json));

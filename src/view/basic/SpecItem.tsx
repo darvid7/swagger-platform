@@ -13,6 +13,7 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
 } from 'material-ui';
+import fetch from 'node-fetch';
 import { client } from '../../client/BackendClient';
 
 import { PlanItem } from 'basic/PlanItem';
@@ -90,9 +91,20 @@ export class SpecItem extends Component<SpecItemProps> {
     // Generate sdk.
     console.log('onRunClicked() \nplan: ' + JSON.stringify(plan));
     // Hard coded for the uber plan.
-    const response = await client.service('sdks').create({ planId: 4 });
+    const response = await client.service('sdks').create({ planId: 6 });
     console.log('response\n' + JSON.stringify(response));
     // Download sdk.
+    const downloadLink = response.info.link;
+    const downloadStatus = await client.service('downloads').create({ downloadUrl: downloadLink });
+    console.log('downloadStatus\n' + JSON.stringify(downloadStatus));
+
+    //
+    // const s = await fetch(downloadLink);
+    // s.pipe(fs.createWriteStream('test.zip'))
+    //   .on('close', function () {
+    //     console.log('File written!');
+    //   })
+    // ;
     // Push sdk.
   };
 
