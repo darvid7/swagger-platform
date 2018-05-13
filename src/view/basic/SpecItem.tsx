@@ -88,10 +88,10 @@ export class SpecItem extends Component<SpecItemProps> {
    */
   private onRunClicked = async (plan: Plan) => {
     // Generate sdk.
-    // console.log('onRunClicked() \nplan: ' + JSON.stringify(plan));
+    console.log('onRunClicked() \nplan: ' + JSON.stringify(plan));
     // Hard coded for the uber plan.
     const response = await client.service('sdks').create({ planId: 4 });
-    // console.log('response\n' + JSON.stringify(response));
+    console.log('response\n' + JSON.stringify(response));
     // Download sdk.
     // Push sdk.
   };

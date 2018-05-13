@@ -54,6 +54,26 @@ export async function initDummyData(specs, plans): Promise<void> {
       target: 'python',
       version: 'alpha',
       buildStatus: BuildStatus.NOTRUN,
+    },
+    {
+      target: 'java',
+      version: 'alpha',
+      buildStatus: BuildStatus.NOTRUN,
+    },
+  );
+  const telstraMessagingApiSpec = await specs.create({
+    title: 'Telstra Messaging API v2',
+    description:
+      'The Messaging API sends and receives both SMS and MMS messages to mobile devices in a single request. You can also query the status of a previously sent SMS and MMS message.',
+    path:
+      'https://raw.githubusercontent.com/telstra/MessagingAPI-v2/master/docs/swagger/messaging-api-swagger.yaml',
+  });
+  await addToSpec(
+    telstraMessagingApiSpec,
+    {
+      target: 'python',
+      version: 'alpha',
+      buildStatus: BuildStatus.NOTRUN,
       publishUrl: '',
     },
     {
@@ -63,5 +83,4 @@ export async function initDummyData(specs, plans): Promise<void> {
       publishUrl: '',
     },
   );
-  // https://github.com/telstra/MessagingAPI-v2/blob/master/docs/swagger/messaging-api-swagger.yaml
 }
