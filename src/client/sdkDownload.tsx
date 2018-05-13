@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import fetch from 'node-fetch';
 import { unzipSdk } from 'client/sdkUnzip';
+import { pushSdk } from 'client/sdkPush';
 const TEMP_DIR: string = 'tmp/';
 
 export async function downloadSdk(url: string): Promise<any> {
@@ -38,6 +39,10 @@ export async function downloadSdk(url: string): Promise<any> {
   console.log('unzipedName below');
   console.log(unzipedName);
   response.unziped = unzipedName;
+  // Push
+  const path = TEMP_DIR + unzipedName;
+  // const pushDone = pushSdk(path);
+  // console.log(pushDone);
   return response;
 }
 

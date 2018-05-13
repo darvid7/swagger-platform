@@ -97,14 +97,6 @@ export class SpecItem extends Component<SpecItemProps> {
     const downloadLink = response.info.link;
     const downloadStatus = await client.service('downloads').create({ downloadUrl: downloadLink });
     console.log('downloadStatus\n' + JSON.stringify(downloadStatus));
-
-    //
-    // const s = await fetch(downloadLink);
-    // s.pipe(fs.createWriteStream('test.zip'))
-    //   .on('close', function () {
-    //     console.log('File written!');
-    //   })
-    // ;
     // Push sdk.
   };
 

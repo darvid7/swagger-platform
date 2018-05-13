@@ -10,7 +10,8 @@ export function unzipSdk(zipPath: string): Promise<any> {
   const result = {};
 
   console.log('syncUnzip');
-  let code = execSync('unzip -o ' + TEMP_DIR + zipPath);
+  console.log(zipPath)
+  let code = execSync('unzip -o ' + zipPath + ' -d tmp');
 
   console.log(code.toString('utf-8'));
   console.log(code);
