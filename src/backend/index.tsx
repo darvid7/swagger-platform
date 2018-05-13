@@ -8,11 +8,17 @@ import cors from 'cors';
 import memory from 'feathers-memory';
 import swagger from 'feathers-swagger';
 import { BuildStatus } from 'model/Plan';
+import * as fs from 'fs';
 
 import 'source-map-support/register';
 import {downloadSdk} from "client/sdkDownload";
 
+const TEMP_DIR: string = '../swagger-platform-tmp/';
+
 async function run(port: number) {
+
+  fs.mkdir(TEMP_DIR);
+
   const specs = memory();
   specs.docs = {
     description: 'Swagger/OpenAPI specs',

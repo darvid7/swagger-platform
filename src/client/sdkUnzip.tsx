@@ -3,15 +3,15 @@ import {unzip} from "zlib";
 const TEMP_DIR: string = 'tmp/';
 const execSync = require('child_process').execSync;
 
-export function unzipSdk(zipPath: string): Promise<any> {
+export function unzipSdk(basePath: string, zipName: string): Promise<any> {
   /* Unzips an SDK for a Spec
   * @param {string} zipPath - Zip folder to unzip
   */
   const result = {};
 
   console.log('syncUnzip');
-  console.log(zipPath)
-  let code = execSync('unzip -o ' + zipPath + ' -d tmp');
+  console.log(basePath + zipName);
+  let code = execSync('unzip -o ' + basePath + zipName + ' -d ' + basePath);
 
   console.log(code.toString('utf-8'));
   console.log(code);
@@ -25,7 +25,7 @@ export function unzipSdk(zipPath: string): Promise<any> {
   sdkName = sdkName.replace(' inflating: ', '');
   const tokens = sdkName.split('/');
   console.log(tokens);
-  let cleanNamed = tokens[0].trimLeft();
+  let cleanNamed = tokens[2].trimLeft();
   console.log(cleanNamed);
   return cleanNamed; // python-client
 }

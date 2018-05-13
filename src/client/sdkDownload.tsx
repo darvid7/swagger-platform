@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import fetch from 'node-fetch';
 import { unzipSdk } from 'client/sdkUnzip';
 import { pushSdk } from 'client/sdkPush';
-const TEMP_DIR: string = 'tmp/';
+const TEMP_DIR: string = '../swagger-platform-tmp/';
 
 export async function downloadSdk(url: string): Promise<any> {
   /* Downloads an SDK for a Spec
@@ -35,14 +35,14 @@ export async function downloadSdk(url: string): Promise<any> {
     result.body.pipe(writeStream);
   });
   await asyncWriteStream;
-  const unzipedName = unzipSdk(TEMP_DIR + 'test-dl.zip');
+  const unzipedName = unzipSdk(TEMP_DIR, 'test-dl.zip');
   console.log('unzipedName below');
   console.log(unzipedName);
   response.unziped = unzipedName;
   // Push
   const path = TEMP_DIR + unzipedName;
-  // const pushDone = pushSdk(path);
-  // console.log(pushDone);
+  const pushDone = pushSdk(path);
+  console.log(pushDone);
   return response;
 }
 
