@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import fetch from 'node-fetch';
-import * as https from 'https';
-
+import { unzipSdk } from 'client/sdkUnzip';
 const TEMP_DIR: string = 'tmp/';
 
 export async function downloadSdk(url: string): Promise<any> {
@@ -12,9 +11,6 @@ export async function downloadSdk(url: string): Promise<any> {
   /* tslint:disable:no-console */
   // TODO: Use a logging framework instead of console.log
 
-  const agent = new https.Agent({
-    rejectUnauthorized: false
-  });
   let url2 = url.slice(5, url.length);
   url2 = 'http' + url2;
   console.log('downloadSdk');
@@ -38,6 +34,10 @@ export async function downloadSdk(url: string): Promise<any> {
     result.body.pipe(writeStream);
   });
   await asyncWriteStream;
+  const unzipedName = unzipSdk(TEMP_DIR + 'test-dl.zip');
+  console.log('unzipedName below');
+  console.log(unzipedName);
+  response.unziped = unzipedName;
   return response;
 }
 
