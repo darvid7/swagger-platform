@@ -18,9 +18,11 @@ import { client } from '../../client/BackendClient';
 
 import { PlanItem } from 'basic/PlanItem';
 import { HasId } from 'model/Entity';
-import { Plan } from 'model/Plan';
+import { Plan, BuildStatus } from 'model/Plan';
 import { Spec } from 'model/Spec';
 import { createStyled } from 'view/createStyled';
+import {Observer} from "mobx-react";
+import {action} from "mobx";
 
 const Styled: any = createStyled(theme => ({
   bordered: {
@@ -87,18 +89,26 @@ export class SpecItem extends Component<SpecItemProps> {
    *
    * @param plan
    */
-  private onRunClicked = async (plan: Plan) => {
+  private onRunClicked = action(async (plan: Plan) => {
     // Generate sdk.
+
+    // Downloading.
     console.log('onRunClicked() \nplan: ' + JSON.stringify(plan));
-    // Hard coded for the uber plan.
+    plan.buildStatus = BuildStatus.GENERATING;
     const response = await client.service('sdks').create({ planId: 6 });
     console.log('response\n' + JSON.stringify(response));
     // Download sdk.
     const downloadLink = response.info.link;
-    const downloadStatus = await client.service('downloads').create({ downloadUrl: downloadLink });
+    const downloadsService = client.service('downloads');
+    downloadsService.timeout = 20000;
+    plan.buildStatus = BuildStatus.PUSHING;
+
+    const downloadStatus = await downloadsService.create({ downloadUrl: downloadLink });
     console.log('downloadStatus\n' + JSON.stringify(downloadStatus));
+    plan.buildStatus = BuildStatus.PUBLISHED;
+
     // Push sdk.
-  };
+  });
 
   private onChange = (event, expanded) =>
     this.props.onPanelChange(this.props.spec, expanded);
@@ -108,61 +118,67 @@ export class SpecItem extends Component<SpecItemProps> {
     return (
       <Styled>
         {({ classes }) => (
-          <ExpansionPanel expanded={expanded} onChange={this.onChange}>
-            <ExpansionPanelSummary
-              classes={{ content: classes.summarySection }}
-              expandIcon={expanded ? <Icons.Close /> : <Icons.InfoOutline />}
-            >
-              <div className={classes.summaryTitle}>
-                <Typography noWrap variant={expanded ? 'title' : 'body1'}>
-                  {spec.title}
-                </Typography>
-              </div>
-              <div className={classes.summaryDescription}>
-                <Typography noWrap color="textSecondary" variant="body1">
-                  {!expanded && spec.description ? spec.description : ''}
-                </Typography>
-              </div>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <div className={classes.detailSection}>
-                <Typography className={classes.indent}>{spec.description}</Typography>
-                <Typography variant="subheading" gutterBottom className={classes.indent}>
-                  Specification File
-                </Typography>
-                <List className={classes.bordered} dense>
-                  <ListItem>
-                    <ListItemText primary={spec.path} />
-                    <ListItemSecondaryAction>
-                      <IconButton aria-label="Edit">
-                        <Icons.Edit />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
-                <div className={classes.sdkHeader}>
-                  <div className={classes.sdkTitleSection}>
-                    <Typography variant="subheading" className={classes.indent}>
-                      SDKs
-                    </Typography>
-                  </div>
-                  <div className={classes.sdkHeaderActions}>
-                    <Button variant="flat" color="primary">
-                      Run all
-                    </Button>
-                  </div>
-                </div>
-                <List className={classes.bordered}>
-                  {plans.map(plan => (
-                    <ListItem key={plan.id}>
-                      <PlanItem plan={plan} onRunClicked={this.onRunClicked} />
-                    </ListItem>
-                  ))}
-                </List>
-              </div>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        )}
+          <Observer>
+            {
+              () => (
+                <ExpansionPanel expanded={expanded} onChange={this.onChange}>
+                  <ExpansionPanelSummary
+                    classes={{ content: classes.summarySection }}
+                    expandIcon={expanded ? <Icons.Close /> : <Icons.InfoOutline />}
+                  >
+                    <div className={classes.summaryTitle}>
+                      <Typography noWrap variant={expanded ? 'title' : 'body1'}>
+                        {spec.title}
+                      </Typography>
+                    </div>
+                    <div className={classes.summaryDescription}>
+                      <Typography noWrap color="textSecondary" variant="body1">
+                        {!expanded && spec.description ? spec.description : ''}
+                      </Typography>
+                    </div>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <div className={classes.detailSection}>
+                      <Typography className={classes.indent}>{spec.description}</Typography>
+                      <Typography variant="subheading" gutterBottom className={classes.indent}>
+                        Specification File
+                      </Typography>
+                      <List className={classes.bordered} dense>
+                        <ListItem>
+                          <ListItemText primary={spec.path} />
+                          <ListItemSecondaryAction>
+                            <IconButton aria-label="Edit">
+                              <Icons.Edit />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      </List>
+                      <div className={classes.sdkHeader}>
+                        <div className={classes.sdkTitleSection}>
+                          <Typography variant="subheading" className={classes.indent}>
+                            SDKs
+                          </Typography>
+                        </div>
+                        <div className={classes.sdkHeaderActions}>
+                          <Button variant="flat" color="primary">
+                            Run all
+                          </Button>
+                        </div>
+                      </div>
+                      <List className={classes.bordered}>
+                        {plans.map(plan => (
+                          <ListItem key={plan.id}>
+                            <PlanItem plan={plan} onRunClicked={this.onRunClicked} />
+                          </ListItem>
+                        ))}
+                      </List>
+                    </div>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              )
+            }
+          </Observer>
+          )}
       </Styled>
     );
   }

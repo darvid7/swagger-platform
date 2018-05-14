@@ -1,7 +1,7 @@
 import React, { SFC } from 'react';
 
 import { Chip } from 'material-ui';
-import { red, green, amber, grey } from 'material-ui/colors';
+import { red, green, amber, grey, blue } from 'material-ui/colors';
 
 import { BuildStatus } from 'model/Plan';
 import { createStyled } from 'view/createStyled';
@@ -16,6 +16,12 @@ const buildStatusToLabel = ({ buildStatus }) => {
       return 'Success';
     case BuildStatus.FAIL:
       return 'Failed';
+    case BuildStatus.GENERATING:
+      return 'Generating';
+    case BuildStatus.PUSHING:
+      return 'Pushing';
+    case BuildStatus.PUBLISHED:
+      return 'Published';
   }
 };
 const buildStatusToColor = ({ buildStatus }) => {
@@ -28,6 +34,12 @@ const buildStatusToColor = ({ buildStatus }) => {
       return green[600];
     case BuildStatus.FAIL:
       return red[900];
+    case BuildStatus.GENERATING:
+      return blue[600];
+    case BuildStatus.PUSHING:
+      return blue[600];
+    case BuildStatus.PUBLISHED:
+      return green[600];
   }
 };
 const Styled: any = createStyled(theme => ({

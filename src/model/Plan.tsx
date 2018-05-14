@@ -14,6 +14,9 @@ export enum BuildStatus {
   RUNNING,
   SUCCESS,
   FAIL,
+  GENERATING,
+  PUSHING,
+  PUBLISHED,
 }
 
 export const PLAN_TARGETS = [

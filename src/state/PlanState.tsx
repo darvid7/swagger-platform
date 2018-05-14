@@ -29,4 +29,4 @@ export const state: PlanState = new PlanState();
 client
   .service('plans')
   .find()
-  .then(plans => plans.forEach(plan => state.plans.set(plan.id, plan)));
+  .then(plans => plans.forEach(plan => state.plans.set(plan.id, observable(plan))));

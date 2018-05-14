@@ -16,8 +16,9 @@ import {downloadSdk} from "client/sdkDownload";
 const TEMP_DIR: string = '../swagger-platform-tmp/';
 
 async function run(port: number) {
-
-  fs.mkdir(TEMP_DIR);
+  // if (!fs.exists(TEMP_DIR, () => {})) {
+  //   fs.mkdir(TEMP_DIR);
+  // }
 
   const specs = memory();
   specs.docs = {
@@ -124,7 +125,7 @@ async function run(port: number) {
   // TODO: Docs say this works but i'm not convinced
   // https://docs.feathersjs.com/api/client/socketio.html#direct-connection
   // https://github.com/feathersjs/socketio/issues/107
-  app.service('downloads').timeout = 10000;
+  // app.service('downloads').timeout = 10000;
   app.service('sdks').hooks({
     before: {
       async create(context) {
