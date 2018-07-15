@@ -9,6 +9,7 @@ import { ContentContainer } from 'basic/ContentContainer';
 import { SimpleToolbar } from 'basic/SimpleToolbar';
 import { SpecList } from 'basic/SpecList';
 import { state } from 'state/SpecState';
+import { AddModal } from 'view/AddModal';
 import { AddPlanModal } from 'view/AddPlanModal';
 import { AddSpecModal } from 'view/AddSpecModal';
 
@@ -47,14 +48,22 @@ export class Overview extends Component<RouteComponentProps<{}>, {}> {
               onSpecExpanded={this.expandSpec}
               // Go to the Spec viewing route when you select a Spec
               onSpecSelected={this.goToSpec}
-              //
+              // Go to add SDK modal.
               onAddSdkPlan={this.addSdkPlan}
             />
-            <Route exact path={`${this.props.match.url}/add`} component={AddSpecModal} />
+            <Route
+              exact
+              path={`${this.props.match.url}/add`}
+              render={props => (
+                <AddModal {...props} innerModal={<AddSpecModal {...props} />} />
+              )}
+            />
             <Route
               exact
               path={`${this.props.match.url}/plan/add`}
-              component={AddPlanModal}
+              render={props => (
+                <AddModal {...props} innerModal={<AddPlanModal {...props} />} />
+              )}
             />
           </ContentContainer>,
         ]}

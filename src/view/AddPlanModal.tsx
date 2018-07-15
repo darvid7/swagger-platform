@@ -1,31 +1,10 @@
 import React, { Component } from 'react';
 
-import { Button, Typography } from '@material-ui/core';
 import { observable, action } from 'mobx';
-import { Observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
-import { FloatingModal } from 'basic/FloatingModal';
 import { PlanModal } from 'basic/PlanModal';
 import { state as planState, AddedPlan } from 'state/PlanState';
-import { createStyled } from 'view/createStyled';
-
-const Styled: any = createStyled(theme => ({
-  errorModalPaper: {
-    maxWidth: theme.spacing.unit * 48,
-  },
-  modalContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: theme.spacing.unit * 3,
-  },
-  buttonRow: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    padding: theme.spacing.unit,
-  },
-}));
 
 /**
  * A modal window that allows the user to add a SDK Plan to the dashboard.
@@ -43,11 +22,8 @@ export class AddPlanModal extends Component<RouteComponentProps<{}>, {}> {
   @observable private showErrorModal: boolean = false;
 
   private closeModal = () => {
+    console.log(this.props);
     this.props.history.push('/');
-  };
-
-  private closeErrorModal = () => {
-    this.showErrorModal = false;
   };
 
   /**
@@ -69,39 +45,15 @@ export class AddPlanModal extends Component<RouteComponentProps<{}>, {}> {
 
   public render() {
     return (
-      <Styled>
-        {({ classes }) => (
-          <Observer>
-            {() => [
-              <PlanModal
-                key={0}
-                submitButtonProps={{
-                  children: 'Add',
-                }}
-                onSubmitPlan={this.onAddSdkPlan}
-                onCloseModal={this.closeModal}
-                showSubmitProgress={this.showProgressIndicator}
-              />,
-              <FloatingModal
-                key={1}
-                open={this.showErrorModal}
-                onClose={this.closeErrorModal}
-                classes={{ paper: classes.errorModalPaper }}
-              >
-                <div className={classes.modalContent}>
-                  <Typography variant="title">Error</Typography>
-                  <Typography>An error occurred adding the SDK Plan.</Typography>
-                </div>
-                <div className={classes.buttonRow}>
-                  <Button color="primary" onClick={this.closeErrorModal}>
-                    Ok
-                  </Button>
-                </div>
-              </FloatingModal>,
-            ]}
-          </Observer>
-        )}
-      </Styled>
+      <PlanModal
+        key={0}
+        submitButtonProps={{
+          children: 'Add',
+        }}
+        onSubmitPlan={this.onAddSdkPlan}
+        onCloseModal={this.closeModal}
+        showSubmitProgress={this.showProgressIndicator}
+      />
     );
   }
 }
